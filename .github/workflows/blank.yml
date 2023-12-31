@@ -58,16 +58,16 @@ jobs:
     #     echo -e $(curl -b cookie.txt -X POST 'https://sockboom.id/user/checkin') >> ./run.log
     #     tail run.log #避免日志上传失败丢失日志
     #     curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(tail ./run.log)&group=sockboom"
-    - name: Commit #上传日志到仓库，可以自行修改 name 和 email
-      env:
-       NAME: bot
-       EMAIL: bot@sockboom.com
-      run: |
-        git config --global user.name "$NAME"
-        git config --global user.email "$EMAIL"
-        git add .
-        git commit -m "bot checkin"
-    - name: Push log
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.TOKEN }}
+    # - name: Commit #上传日志到仓库，可以自行修改 name 和 email
+    #   env:
+    #    NAME: bot
+    #    EMAIL: bot@sockboom.com
+    #   run: |
+    #     git config --global user.name "$NAME"
+    #     git config --global user.email "$EMAIL"
+    #     git add .
+    #     git commit -m "bot checkin"
+    # - name: Push log
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     github_token: ${{ secrets.TOKEN }}
