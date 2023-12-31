@@ -27,10 +27,11 @@ jobs:
       env:
         EMAIL: ${{ secrets.EMAIL }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        BARK: ${{ secrets.BARK }}
       run: | 
         echo -en $(curl -c cookie.txt -X POST 'https://sockboom.id/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
     - name: Chick in Api #签到
+      env:
+        BARK: ${{ secrets.BARK }}
       run: | 
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
         echo -e $(curl -b cookie.txt -X POST 'https://sockboom.id/user/checkin') >> ./run.log
