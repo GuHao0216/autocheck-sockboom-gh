@@ -40,8 +40,7 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         BARK: ${{ secrets.BARK }}
       run: |
-        python3 checkin.py --email $EMAIL --p $PASSWORD > ./checkin.log
-        curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(tail ./checkin.log)&group=sockboom"
+        curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(python3 checkin.py --email $EMAIL --p $PASSWORD)&group=sockboom"
 
 
     
