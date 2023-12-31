@@ -23,20 +23,36 @@ jobs:
         timezone: Asia/Shanghai          
     - name: Get log
       uses: actions/checkout@master
-    - name: login in APi #登录获取cookie
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: checkin
       env:
         EMAIL: ${{ secrets.EMAIL }}
         PASSWORD: ${{ secrets.PASSWORD }}
-      run: | 
-        echo -en $(curl -c cookie.txt -X POST 'https://sockboom.id/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
-    - name: Chick in Api #签到
-      env:
         BARK: ${{ secrets.BARK }}
-      run: | 
-        echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
-        echo -e $(curl -b cookie.txt -X POST 'https://sockboom.id/user/checkin') >> ./run.log
-        tail run.log #避免日志上传失败丢失日志
-        curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(tail ./run.log)&group=sockboom"
+      run: |
+        python3 checkin.py --email $EMAIL --p $PASSWORD > ./checkin.log
+        curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(tail ./checkin.log)&group=sockboom"
+
+
+    
+    # - name: login in APi #登录获取cookie
+    #   env:
+    #     EMAIL: ${{ secrets.EMAIL }}
+    #     PASSWORD: ${{ secrets.PASSWORD }}
+    #   run: | 
+    #     echo -en $(curl -c cookie.txt -X POST 'https://sockboom.id/auth/login' -d email="$EMAIL" -d passwd="$PASSWORD")
+    # - name: Chick in Api #签到
+    #   env:
+    #     BARK: ${{ secrets.BARK }}
+    #   run: | 
+    #     echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
+    #     echo -e $(curl -b cookie.txt -X POST 'https://sockboom.id/user/checkin') >> ./run.log
+    #     tail run.log #避免日志上传失败丢失日志
+    #     curl -X POST "$BARK" -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -d "title=SockBoom CheckIn&body=$(tail ./run.log)&group=sockboom"
     - name: Commit #上传日志到仓库，可以自行修改 name 和 email
       env:
        NAME: bot
