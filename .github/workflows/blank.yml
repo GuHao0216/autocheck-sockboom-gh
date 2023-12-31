@@ -35,7 +35,7 @@ jobs:
         echo -n `date +%Y-%m-%d\ %H:%M:%S`\ -\ >> ./run.log 
         echo -e $(curl -b cookie.txt -X POST 'https://sockboom.id/user/checkin') >> ./run.log
         tail run.log #避免日志上传失败丢失日志
-        echo "$EMAIL"
+        echo -en "$EMAIL"
         echo '123'
         echo "$EMAIL" 
         curl -X POST "$BARK" -H 'Content-Type: application/x-www-form-urlencoded;charset=utf-8' -d "title=SockBoom CheckIn&body=$(tail ./run.log)&group=sockboom"
